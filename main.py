@@ -54,25 +54,52 @@ class ContainerYardMap:
                      tb_container_spaces=False,*argv)-> None:
         if tb_ships:
             with self.engine.connect() as e:
-                e.execute("""
+                e.execute(f"""
                           insert into tb_ships(ship_id,ship_capacity)
-                          select argv[0],argv[1];
+                          select  {argv[0]},{argv[1]};
                           """)
-        if tb_:
+        if tb_subspace:
                 with self.engine.connect() as e:
-                    e.execute("""
+                    e.execute(f"""
                           insert into tb_ships(ship_id,ship_capacity)
-                          select argv[0],argv[1];
+                          select {argv[0]},{argv[1]},{argv[2]},{argv[3]},{argv[4]};
                           """)
-        if
+        if tb_subspace_stack:
+            with self.engine.connect() as e:
+                e.execute("""
+                          insert into tb_subspace_stack(space_id,subspace_id,container_id,
+                                    container_final_destination_reached,container_slot_status,container_reached_date)
+                          select {argv[0]},{argv[1]},{argv[2]},{argv[3]},{argv[4]},{argv[5]};
+                          """)
+        if tb_container:
+            with self.engine.connect() as e:
+                e.execute("""
+                          insert into tb_container(container_id,ship_id,container_destination,
+                                container_orgin,container_start_date,container_delivery_date,container_shape,container_priority)
+                          select {argv[0]},{argv[1]},{argv[2]},{argv[3]},{argv[4]},{argv[5]},{argv[6]},{argv[7]}
+                          """)
+        if tb_container_spaces:
+            with self.engine.connect() as e:
+                e.execute("""
+                          insert into tb_subspace(space_id,max_stack_capacity,current_capacity)
+                          select {argv[0]},{argv[1],argv[2],argv[3]}
+                          """)
+        
+    def get_Resouce_probability(self):
+        p=0.75
+        return p
+    
+    
+    
+    
     
     def NewShip(self,ship_id,container_drop_count,container_export_count,
                 container_id=[],container_destination=[],container_start_date=[],
                 container_destination_date=[]
                 ):
         
-        
-        self.remap()     
+        if self.get_Resouce_probability()>0.75:
+            self.remap()     
         
         if container_drop_count == 0:
             print("no containers to be dropped")

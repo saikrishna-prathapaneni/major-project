@@ -5,15 +5,16 @@
 
 
 create table [major].[dbo].tb_ships(
- ship_id int primary key identity(1,1),
+ ship_id int primary key,
  ship_capacity int
  --ship_unload_Quantity int,
  --ship_load_Quantity int,
 )
 
+--drop table [major].[dbo].tb_ships
 
 create table [major].[dbo].tb_container(
- container_id int primary key identity(1,1),
+ container_id int primary key,
  ship_id int foreign key references [major].[dbo].tb_ships (ship_id),
  container_desination varchar(10),
  container_origin varchar(10),
@@ -48,6 +49,7 @@ container_slot_status bit, --1 container 0 no container
 container_reached_date date,
 
 )
+
 
 
 
