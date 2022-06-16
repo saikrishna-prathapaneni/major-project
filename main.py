@@ -1,6 +1,6 @@
 import os
 import sqlalchemy
-import pandas
+import pandas as pd
 import numpy
 import urllib
 from sqlalchemy import create_engine
@@ -43,12 +43,34 @@ class ContainerYardMap:
                           
                           """)
     def remap(self):
-        pass
+        with self.engine.connect() as e:
+            self.yard_dataframe=pd.read_sql("select * from tb_subspace_stack")
+            e.execute("""
+                      truncate table [major].[dbo].tb_subspace_stack
+                      """)
+    
+    def UpdateTables(self,tb_ships=False,tb_container=False,
+                     tb_subspace_stack=False,tb_subspace=False,
+                     tb_container_spaces=False,*argv)-> None:
+        if tb_ships:
+            with self.engine.connect() as e:
+                e.execute("""
+                          insert into tb_ships(ship_id,ship_capacity)
+                          select argv[0],argv[1];
+                          """)
+        if tb_:
+                with self.engine.connect() as e:
+                    e.execute("""
+                          insert into tb_ships(ship_id,ship_capacity)
+                          select argv[0],argv[1];
+                          """)
+        if
     
     def NewShip(self,ship_id,container_drop_count,container_export_count,
                 container_id=[],container_destination=[],container_start_date=[],
                 container_destination_date=[]
                 ):
+        
         
         self.remap()     
         
